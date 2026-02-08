@@ -1,0 +1,327 @@
+{
+  "timestamp": "2026-02-08T10:12:45.030105Z",
+  "mode": "synthetic",
+  "steps": 50,
+  "starting_cash": 1000.0,
+  "ending_equity": 992.2052563899969,
+  "total_return": -0.007794743610003138,
+  "max_drawdown": 0.008478785968800539,
+  "num_trades": 34,
+  "portfolio": {
+    "cash": 992.2052563899969,
+    "positions": {
+      "": {
+        "qty": 0.0,
+        "avg_price": 0.0
+      }
+    },
+    "trades": [
+      {
+        "step": 2,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.4862588238907321,
+        "notional": 9.725176477814642,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 2,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.5207534140778837,
+        "notional": 10.415068281557673,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 3,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5013684552537618,
+        "notional": 10.027369105075238,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 3,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.500551402009706,
+        "notional": 10.011028040194121,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 5,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5018033874129256,
+        "notional": 10.036067748258512,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 5,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4983390199148092,
+        "notional": 9.966780398296184,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 8,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5288733237605613,
+        "notional": 10.577466475211226,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 8,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.47179832888152967,
+        "notional": 9.435966577630593,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 9,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5287040301431236,
+        "notional": 10.574080602862473,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 9,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4741970229074937,
+        "notional": 9.483940458149874,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 10,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5047859442792674,
+        "notional": 10.095718885585347,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 10,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4919604738653076,
+        "notional": 9.839209477306152,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 11,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5045426282165469,
+        "notional": 10.09085256433094,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 11,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.49170277251575534,
+        "notional": 9.834055450315107,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 12,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5090261322316124,
+        "notional": 10.180522644632248,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 12,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4967254307416824,
+        "notional": 9.934508614833648,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 13,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.51316763577563,
+        "notional": 10.2633527155126,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 13,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4809064477023752,
+        "notional": 9.618128954047503,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 14,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5038713936371054,
+        "notional": 10.077427872742108,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 14,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.49698355568395314,
+        "notional": 9.939671113679063,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 17,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5120846008853382,
+        "notional": 10.241692017706765,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 17,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4844961598292357,
+        "notional": 9.689923196584715,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 18,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.509912076714772,
+        "notional": 10.198241534295441,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 18,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4827962281549766,
+        "notional": 9.655924563099532,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 19,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5047763294209587,
+        "notional": 10.095526588419174,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 19,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.49320920100510357,
+        "notional": 9.864184020102071,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 20,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5009651631058487,
+        "notional": 10.019303262116974,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 20,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.49265741766176274,
+        "notional": 9.853148353235255,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 37,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5042743483184315,
+        "notional": 10.08548696636863,
+        "reason": "edge_no"
+      },
+      {
+        "step": 37,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.4882093787054602,
+        "notional": 9.764187574109204,
+        "reason": "close_yes_edge_reverted"
+      },
+      {
+        "step": 46,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5405349776411441,
+        "notional": 10.810699552822882,
+        "reason": "edge_no"
+      },
+      {
+        "step": 46,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.46552259317375144,
+        "notional": 9.310451863475029,
+        "reason": "close_yes_edge_reverted"
+      },
+      {
+        "step": 50,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.5368389822095689,
+        "notional": 10.73677964419138,
+        "reason": "edge_no"
+      },
+      {
+        "step": 50,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.47124220556639884,
+        "notional": 9.424844111327976,
+        "reason": "close_yes_edge_reverted"
+      }
+    ]
+  }
+}

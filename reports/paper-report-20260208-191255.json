@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-02-08T10:12:55.940429+00:00",
+  "mode": "synthetic",
+  "steps": 10,
+  "starting_cash": 1000.0,
+  "ending_equity": 1001.1651631102488,
+  "total_return": 0.001165163110248841,
+  "max_drawdown": 0.0,
+  "num_trades": 4,
+  "portfolio": {
+    "cash": 1001.1651631102488,
+    "positions": {
+      "": {
+        "qty": 0.0,
+        "avg_price": 0.0
+      }
+    },
+    "trades": [
+      {
+        "step": 4,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.48497593863879007,
+        "notional": 9.699518772775802,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 4,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.5096161141307384,
+        "notional": 10.192322282614768,
+        "reason": "close_no_edge_reverted"
+      },
+      {
+        "step": 9,
+        "token_id": "",
+        "side": "BUY",
+        "qty": 20.0,
+        "price": 0.48641621159298243,
+        "notional": 9.728324231859649,
+        "reason": "edge_yes"
+      },
+      {
+        "step": 9,
+        "token_id": "",
+        "side": "SELL",
+        "qty": 20.0,
+        "price": 0.5200341916134776,
+        "notional": 10.400683832269554,
+        "reason": "close_no_edge_reverted"
+      }
+    ]
+  }
+}
