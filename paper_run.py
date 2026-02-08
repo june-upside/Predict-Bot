@@ -9,7 +9,7 @@ import time
 import re
 import requests
 from dataclasses import dataclass
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional, Tuple
 
@@ -239,7 +239,7 @@ def run():
         max_dd = max(max_dd, dd)
 
     report = {
-        "timestamp": datetime.now(UTC).isoformat(),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "mode": "synthetic" if use_synth else "live-data-paper-trade",
         "steps": pcfg.steps,
         "starting_cash": start_eq,
