@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-02-08T10:24:30.982328+00:00",
+  "mode": "live-data-paper-trade",
+  "steps": 8,
+  "starting_cash": 1000.0,
+  "ending_equity": 1000.0,
+  "total_return": 0.0,
+  "max_drawdown": 0.0,
+  "num_trades": 0,
+  "portfolio": {
+    "cash": 1000.0,
+    "positions": {},
+    "trades": []
+  }
+}

@@ -6,12 +6,15 @@ import json
 import os
 import random
 import time
+import re
+import requests
 from dataclasses import dataclass
 from datetime import datetime, UTC
 from pathlib import Path
 from typing import Dict, Optional, Tuple
 
 from dotenv import load_dotenv
+from py_clob_client.client import ClobClient
 
 import bot
 from paper_engine import PaperPortfolio
@@ -61,16 +64,67 @@ class SyntheticFeed:
         return self.rain_prob, yes_bid, yes_ask, no_bid, no_ask
 
 
+def discover_weather_tokens(location_hint: str = "new york") -> Optional[Tuple[str, str, str]]:
+    """Find an active weather-ish binary market from Gamma API.
+    Returns (question, yes_token_id, no_token_id) or None.
+    """
+    kw = re.compile(r"\b(rain|snow|temperature|precipitation|weather|hurricane|storm)\b", re.I)
+    loc = (location_hint or "").strip().lower()
+    for offset in range(0, 20000, 500):
+        r = requests.get(
+            "https://gamma-api.polymarket.com/markets",
+            params={"limit": 500, "offset": offset, "active": "true", "closed": "false"},
+            timeout=20,
+        )
+        r.raise_for_status()
+        arr = r.json()
+        if not arr:
+            break
+        for m in arr:
+            q = m.get("question", "")
+            if not kw.search(q):
+                continue
+            if loc and loc not in q.lower():
+                continue
+            toks_raw = m.get("clobTokenIds")
+            toks = []
+            if isinstance(toks_raw, str):
+                try:
+                    toks = json.loads(toks_raw)
+                except Exception:
+                    toks = []
+            elif isinstance(toks_raw, list):
+                toks = toks_raw
+            if len(toks) >= 2:
+                return q, str(toks[0]), str(toks[1])
+    return None
+
+
 class LiveFeed:
     def __init__(self, cfg: bot.Config):
         self.cfg = cfg
         self.weather = bot.WeatherClient(cfg.owm_api_key, timeout=cfg.request_timeout)
-        self.pm = bot.PolymarketCLOB(cfg)
+        # Public market-data client: no private key needed for paper simulation
+        self.clob = ClobClient(host=cfg.polymarket_host, chain_id=cfg.polymarket_chain_id)
+
+    def _best_bid_ask(self, token_id: str) -> Tuple[Optional[float], Optional[float]]:
+        ob = self.clob.get_order_book(token_id)
+        bids = ob.get("bids", []) if isinstance(ob, dict) else getattr(ob, "bids", [])
+        asks = ob.get("asks", []) if isinstance(ob, dict) else getattr(ob, "asks", [])
+
+        def _px(x):
+            if isinstance(x, dict):
+                return x.get("price")
+            return getattr(x, "price", None)
+
+        best_bid = float(_px(bids[0])) if bids and _px(bids[0]) is not None else None
+        best_ask = float(_px(asks[0])) if asks and _px(asks[0]) is not None else None
+        return best_bid, best_ask
 
     def next(self) -> Tuple[float, float, float, float, float]:
         rain_prob = self.weather.get_tomorrow_rain_probability(self.cfg.owm_lat, self.cfg.owm_lon, self.cfg.owm_units)
-        yes_bid, yes_ask = self.pm.get_best_bid_ask(self.cfg.yes_token_id)
-        no_bid, no_ask = self.pm.get_best_bid_ask(self.cfg.no_token_id)
+        yes_bid, yes_ask = self._best_bid_ask(self.cfg.yes_token_id)
+        no_bid, no_ask = self._best_bid_ask(self.cfg.no_token_id)
 
         if yes_bid is None or yes_ask is None or no_bid is None or no_ask is None:
             raise RuntimeError("Order book is missing bids/asks")
@@ -94,10 +148,19 @@ def run():
 
     use_synth = pcfg.synthetic_mode
     if not use_synth:
-        required = [cfg.owm_api_key, cfg.yes_token_id, cfg.no_token_id, cfg.polymarket_private_key]
-        if not all(required):
-            print("[WARN] Missing live env vars -> switching to synthetic mode")
-            use_synth = True
+        # Weather API key is optional now (Open-Meteo fallback), token IDs are required unless auto-discovered.
+        if not (cfg.yes_token_id and cfg.no_token_id):
+            hint = os.getenv("MARKET_LOCATION_HINT", "new york")
+            discovered = discover_weather_tokens(hint)
+            if discovered:
+                q, yid, nid = discovered
+                cfg.yes_token_id = yid
+                cfg.no_token_id = nid
+                print(f"[INFO] Auto-discovered market: {q}")
+                print(f"[INFO] YES={yid} NO={nid}")
+            else:
+                print("[WARN] No active weather market token IDs found -> switching to synthetic mode")
+                use_synth = True
 
     feed = SyntheticFeed() if use_synth else LiveFeed(cfg)
 

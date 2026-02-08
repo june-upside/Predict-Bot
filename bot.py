@@ -92,8 +92,7 @@ class WeatherClient:
         self.timeout = timeout
         self.rl = RateLimiter(min_interval_sec=min_interval_sec)
 
-    def get_tomorrow_rain_probability(self, lat: float, lon: float, units: str = "metric") -> float:
-        self.rl.wait()
+    def _from_openweathermap(self, lat: float, lon: float, units: str = "metric") -> float:
         params = {"lat": lat, "lon": lon, "appid": self.api_key, "units": units}
         resp = requests.get(self.BASE_URL, params=params, timeout=self.timeout)
         resp.raise_for_status()
@@ -109,6 +108,47 @@ class WeatherClient:
             pops = [float(e.get("pop", 0.0)) for e in forecast_entries[:8]]
         rain_prob = sum(pops) / len(pops)
         return max(0.0, min(1.0, rain_prob))
+
+    def _from_open_meteo(self, lat: float, lon: float) -> float:
+        # Free fallback (no API key): precipitation probability max for tomorrow
+        url = "https://api.open-meteo.com/v1/forecast"
+        params = {
+            "latitude": lat,
+            "longitude": lon,
+            "hourly": "precipitation_probability",
+            "forecast_days": 2,
+            "timezone": "UTC",
+        }
+        resp = requests.get(url, params=params, timeout=self.timeout)
+        resp.raise_for_status()
+        data = resp.json()
+        hourly = data.get("hourly", {})
+        times = hourly.get("time", [])
+        probs = hourly.get("precipitation_probability", [])
+        if not times or not probs:
+            raise ValueError("No forecast data from Open-Meteo.")
+
+        # Tomorrow in UTC: take max precipitation probability /100
+        first_day = times[0][:10]
+        tomorrow = None
+        for t in times:
+            d = t[:10]
+            if d != first_day:
+                tomorrow = d
+                break
+        if tomorrow is None:
+            tomorrow = first_day
+
+        vals = [float(p) for t, p in zip(times, probs) if t.startswith(tomorrow)]
+        if not vals:
+            vals = [float(p) for p in probs[:24]]
+        return max(0.0, min(1.0, max(vals) / 100.0))
+
+    def get_tomorrow_rain_probability(self, lat: float, lon: float, units: str = "metric") -> float:
+        self.rl.wait()
+        if self.api_key:
+            return self._from_openweathermap(lat, lon, units)
+        return self._from_open_meteo(lat, lon)
 
 
 class PolymarketCLOB:
@@ -133,8 +173,14 @@ class PolymarketCLOB:
         ob = self.client.get_order_book(token_id)
         bids = ob.get("bids", []) if isinstance(ob, dict) else getattr(ob, "bids", [])
         asks = ob.get("asks", []) if isinstance(ob, dict) else getattr(ob, "asks", [])
-        best_bid = float(bids[0]["price"]) if bids else None
-        best_ask = float(asks[0]["price"]) if asks else None
+
+        def _px(x):
+            if isinstance(x, dict):
+                return x.get("price")
+            return getattr(x, "price", None)
+
+        best_bid = float(_px(bids[0])) if bids and _px(bids[0]) is not None else None
+        best_ask = float(_px(asks[0])) if asks and _px(asks[0]) is not None else None
         return best_bid, best_ask
 
     def place_maker_limit_order(self, token_id: str, side: str, price: float, size: float, simulation_mode: bool = True) -> Dict[str, Any]:
